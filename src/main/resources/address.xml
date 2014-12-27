@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Address">
+
+    <select id="getAddress" resultClass="com.learn.model.Address">
+        SELECT
+        ADDR_ID as id,
+        STREET as street,
+        HOUSE_NUMBER as number
+        FROM ADDRESS
+        WHERE ADDR_ID = #value#
+    </select>
+
+
+    <!-- Use Person object (JavaBean) properties as parameters for insert. Each of the
+ parameters in the #hash# symbols is a JavaBeans property. -->
+    <insert id="insertAddress" parameterClass="com.learn.model.Address">
+        INSERT INTO
+        ADDRESS (ADDR_ID, STREET, HOUSE_NUMBER)
+        VALUES (#id#, #street#, #number#)
+    </insert>
+    <!-- Use Person object (JavaBean) properties as parameters for update. Each of the
+    parameters in the #hash# symbols is a JavaBeans property. -->
+    <update id="updateAddress" parameterClass="com.learn.model.Address">
+        UPDATE ADDRESS
+        SET STREET = #street#,
+        HOUSE_NUMBER = #number#
+        WHERE PER_ID = #id#
+    </update>
+    <!-- Use Person object (JavaBean) “id” properties as parameters for delete. Each of the
+    parameters in the #hash# symbols is a JavaBeans property. -->
+    <delete id="deleteAddress" parameterClass="com.learn.model.Address">
+        DELETE ADDRESS
+        WHERE ADDR_ID = #id#
+    </delete>
+
+    <select id="getMaxAddressId" resultClass="java.lang.Integer">
+        SELECT MAX(ADDR_ID) FROM ADDRESS
+    </select>
+
+
+</sqlMap>
