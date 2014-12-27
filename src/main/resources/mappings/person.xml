@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Person">
+
+    <sql id="selectUsersPerson">
+        SELECT *
+    </sql>
+
+    <sql id="selectPerson">
+        SELECT *
+    </sql>
+
+    <resultMap class="com.learn.model.Person" groupBy="id" id="personsMap">
+        <result column="id" property="id"/>
+        <result column="firstName" property="firstName"/>
+        <result column="lastName" property="lastName"/>
+        <result column="birthDate" property="birthDate"/>
+        <result column="weightInKilograms" property="weightInKilograms"/>
+        <result column="heightInMeters" property="heightInMeters"/>
+    </resultMap>
+
+    <resultMap class="com.learn.model.Person" groupBy="id" id="personsUsersMap">
+        <result column="userid" property="id"/>
+        <result column="name" property="firstName"/>
+        <result column="surName" property="lastName"/>
+    </resultMap>
+
+    <select id="getAllPersons" resultClass="com.learn.model.Person" resultMap="personsMap">
+        <include refid="selectPerson" />
+        WHERE
+        <iterate open=" in (" close=")" conjunction="," property="allowedAddressIds">
+            #allowedAddressIds[]#
+        </iterate>
+        FROM PERSON
+    </select>
+
+    <select id="getAllPersonsFromUsers" resultClass="com.learn.model.Person" resultMap="personsUsersMap">
+        <include refid="selectUsersPerson" />
+        FROM wbsc.sc_users
+    </select>
+
+
+    <select id="getPerson" resultClass="com.learn.model.Person">
+        <include refid="selectPerson" />
+        FROM PERSON
+        WHERE PER_ID = #value#
+    </select>
+
+
+    <!-- Use Person object (JavaBean) properties as parameters for insert. Each of the
+ parameters in the #hash# symbols is a JavaBeans property. -->
+    <insert id="insertPerson" parameterClass="com.learn.model.Person">
+        INSERT INTO
+        PERSON (PER_ID, PER_FIRST_NAME, PER_LAST_NAME,
+        PER_BIRTH_DATE, PER_WEIGHT_KG, PER_HEIGHT_M)
+        VALUES (#id#, #firstName#, #lastName#,
+        #birthDate#, #weightInKilograms#, #heightInMeters#)
+    </insert>
+    <!-- Use Person object (JavaBean) properties as parameters for update. Each of the
+    parameters in the #hash# symbols is a JavaBeans property. -->
+    <update id="updatePerson" parameterClass="com.learn.model.Person">
+        UPDATE PERSON
+        SET PER_FIRST_NAME = #firstName#,
+        PER_LAST_NAME = #lastName#, PER_BIRTH_DATE = #birthDate#,
+        PER_WEIGHT_KG = #weightInKilograms#,
+        PER_HEIGHT_M = #heightInMeters#
+        WHERE PER_ID = #id#
+    </update>
+    <!-- Use Person object (JavaBean) “id” properties as parameters for delete. Each of the
+    parameters in the #hash# symbols is a JavaBeans property. -->
+    <delete id="deletePerson" parameterClass="com.learn.model.Person">
+        DELETE PERSON
+        WHERE PER_ID = #id#
+    </delete>
+
+    <select id="getMaxId" resultClass="java.lang.Integer">
+        SELECT MAX(PER_ID) FROM PERSON
+    </select>
+
+
+</sqlMap>

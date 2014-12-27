@@ -23,7 +23,7 @@ public class FillTables {
         PersonDao manager = new PersonDaoIbatis();
 
         //Create the SQLMapClient
-        Reader reader = Resources.getResourceAsReader("sqlmapclientPerson.xml");
+        Reader reader = Resources.getResourceAsReader("sql-map-client.xml");
         SqlMapClient sqlmapClient = SqlMapClientBuilder.buildSqlMapClient (reader);
 
         for (int i = 0; i < 10; i++) {
@@ -50,7 +50,7 @@ public class FillTables {
         addressManager.addAddress(address, sqlmapClient);
         addressManager.addAddress(address2, sqlmapClient);
         addressManager.addAddress(address3, sqlmapClient);
-//        Reader addressReader = Resources.getResourceAsReader("sqlmapclientPerson.xml");
+//        Reader addressReader = Resources.getResourceAsReader("sql-map-client.xml");
 //        SqlMapClient addressSqlmapClient = SqlMapClientBuilder.buildSqlMapClient (reader);
 
     }

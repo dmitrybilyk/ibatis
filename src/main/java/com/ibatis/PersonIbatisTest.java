@@ -22,7 +22,7 @@ public class PersonIbatisTest {
     PersonDao manager = new PersonDaoIbatis();
 
     //Create the SQLMapClient
-    Reader reader = Resources.getResourceAsReader("sqlmapclientPerson.xml");
+    Reader reader = Resources.getResourceAsReader("sql-map-client.xml");
     SqlMapClient sqlmapClient = SqlMapClientBuilder.buildSqlMapClient (reader);
 
     for (int i = 0; i < 10; i++) {

@@ -50,7 +50,7 @@ public class UserDaoIbatis implements UserDao
       ComplexParam complexParam = new ComplexParam();
       complexParam.setComplexValue("alias");
       map.put("key", "alias");
-      List<UserTEO> userTEOs = (List<UserTEO>) sqlmapClient.queryForList("user.getUsers", map);
+      List<UserTEO> userTEOs = (List<UserTEO>) sqlmapClient.queryForList("user.getPersons", map);
       return userTEOs != null? userTEOs : new ArrayList<UserTEO>();
     } catch (SQLException e) {
       e.printStackTrace();

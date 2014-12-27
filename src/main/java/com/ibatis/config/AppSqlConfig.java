@@ -14,7 +14,7 @@ public class AppSqlConfig {
 
   static {
     try {
-      String resource = "sqlmapclientPerson.xml";
+      String resource = "sql-map-client.xml";
       Reader reader = Resources.getResourceAsReader(resource);
       sqlMap = SqlMapClientBuilder.buildSqlMapClient(reader);
     } catch (Exception e) {

@@ -3,9 +3,13 @@ package com.ibatis.dao;
 import com.ibatis.ComplexParam;
 import com.ibatis.UserTEO;
 import com.ibatis.dao.PersonDao;
+import com.ibatis.search.RequestFailedException;
+import com.ibatis.search.SearchBO;
+import com.ibatis.search.SearchCondition;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.learn.model.Person;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -43,19 +47,60 @@ public class PersonDaoIbatis implements PersonDao
     }
 
   @Override
-  public List<UserTEO> getUsers(SqlMapClient sqlmapClient) {
+  public List<Person> getPersons(SqlMapClient sqlmapClient) {
     try {
       Map<String, Object> map = new HashMap<String, Object>();
       ComplexParam complexParam = new ComplexParam();
       complexParam.setComplexValue("alias");
       map.put("key", "alias");
-      List<UserTEO> userTEOs = (List<UserTEO>) sqlmapClient.queryForList("user.getUsers", map);
-      return userTEOs != null? userTEOs : new ArrayList<UserTEO>();
+      List<Person> persons = (List<Person>) sqlmapClient.queryForList("person.getPersons", map);
+      return persons != null? persons : new ArrayList<Person>();
     } catch (SQLException e) {
       e.printStackTrace();
     }
     return null;
   }
+
+    @Override
+    public List<Person> getAllPersons(SqlMapClient sqlmapClient) {
+        try {
+            List<Person> persons = null;
+            try {
+                persons = (List<Person>) sqlmapClient.queryForList("getAllPersons", createParams());
+            } catch (RequestFailedException e) {
+                e.printStackTrace();
+            }
+            return persons != null? persons : new ArrayList<Person>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient) {
+        try {
+            List<Person> persons = null;
+            try {
+                persons = (List<Person>) sqlmapClient.queryForList("getAllPersonsFromUsers", createParams());
+            } catch (RequestFailedException e) {
+                e.printStackTrace();
+            }
+            return persons != null? persons : new ArrayList<Person>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private Map<String,Object> createParams() throws RequestFailedException {
+        Map<String,Object> parametersMap = new HashMap<String, Object>();
+        Integer[] addressIds = {2, 3};
+        parametersMap.put("allowedAddressIds", addressIds);
+        return parametersMap;
+    }
+
 
   @Override
     public void deleteUserById(Integer id, SqlMapClient sqlmapClient) {

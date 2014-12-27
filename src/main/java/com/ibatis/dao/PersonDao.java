@@ -14,7 +14,11 @@ public interface PersonDao {
 
   Person getUserById(Integer id, SqlMapClient sqlmapClient);
 
-  List<UserTEO> getUsers(SqlMapClient sqlmapClient);
+  List<Person> getPersons(SqlMapClient sqlmapClient);
+
+  List<Person> getAllPersons(SqlMapClient sqlmapClient);
+
+  List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient);
 
   void deleteUserById(Integer id, SqlMapClient sqlmapClient);
 }

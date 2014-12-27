@@ -1,14 +1,18 @@
 package com.learn.model;
 
-import java.util.Date;
+import com.google.common.base.MoreObjects;
 
-public class Person {
+import java.util.Date;
+import java.util.Objects;
+
+public class Person extends BaseBean{
  private int id;
  private String firstName;
  private String lastName;
  private Date birthDate;
  private double weightInKilograms;
  private double heightInMeters;
+    private Address address;
 
  public Person(PersonBuilder builder) {
      this.firstName = builder.firstName;
@@ -30,7 +34,15 @@ public class Person {
  this.id = id;
  }
 
-  public String getFirstName() {
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getFirstName() {
     return firstName;
   }
 
@@ -102,5 +114,11 @@ public class Person {
 
     }
 
-
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).
+                add("lastName", this.lastName).
+                add("firstName", this.firstName).
+                add("id", this.id).toString();
+    }
 }

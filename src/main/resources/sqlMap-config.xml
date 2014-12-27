@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC
+        "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+  <settings
+          cacheModelsEnabled="true"
+          enhancementEnabled="true"
+          lazyLoadingEnabled="true"
+          maxRequests="100"
+          maxSessions="20"
+          maxTransactions="5"
+          useStatementNamespaces="false"
+          />
+  <!-- Type aliases allow you to use a shorter name for long fully qualified class names. -->
+  <!--<typeAlias alias="MyDataSource" type="cz.zoom.callrec.webadmin.accessories.ZoomDataSourceFactory"/>-->
+  <typeHandler javaType="com.ibatis.scorecardmodel.bo.ServerSideDate"
+               callback="com.ibatis.scorecardmodel.bo.ServerSideDateHandler"/>
+  <!--<typeHandler javaType="org.joda.time.DateTime"-->
+               <!--callback="cz.zoom.callrec.core.callstorage.type.JodaSqlTimestampTypeHandlerCallback"/>-->
+
+  <!--commitRequired="true" je nutne pro spousteni fci jako napr. del_couple,-->
+  <!--jinak se fce zavolala, vratila vysledek, ale nefungovala-->
+  <transactionManager type="JDBC" commitRequired="true">
+    <dataSource type="SIMPLE">
+      <!--Toto nastaveni si bere z konfiguraku aplikace www_config.xml-->
+      <!--Tuto cast NEUPRAVOVAT-->
+      <property name="JDBC.Driver" value="org.postgresql.Driver"/>
+      <property name="JDBC.ConnectionURL" value="jdbc:postgresql://localhost:5432/callrec"/>
+      <property name="JDBC.Username" value="postgres"/>
+      <property name="JDBC.Password" value="postgres"/>
+      <!--<property name="Pool.MaximumActiveConnections" value="${Pool.MaximumActiveConnections}"/>-->
+      <!--<property name="Pool.TimeToWait" value="${Pool.TimeToWait}"/>-->
+      <!--Tuto cast NEUPRAVOVAT-->
+
+      <!--Toto je mozne nastavit-->
+      <property name="JDBC.DefaultAutoCommit" value="true"/>
+      <property name="Pool.MaximumIdleConnections" value="5"/>
+      <property name="Pool.MaximumCheckoutTime" value="120000"/>
+      <property name="Pool.PingQuery" value="SELECT 1"/>
+      <property name="Pool.PingEnabled" value="true"/>
+      <property name="Pool.PingConnectionsOlderThan" value="1"/>
+      <property name="Pool.PingConnectionsNotUsedFor" value="1"/>
+    </dataSource>
+  </transactionManager>
+
+  <!--&lt;!&ndash; call storage - interactions references these &ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/callrec/core/callstorage/pojo/Couple.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/callrec/core/callstorage/pojo/Call.xml"/>-->
+
+
+  <!--&lt;!&ndash; common &ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/scorecard_common_SqlMap.xml"/>-->
+
+  <!--&lt;!&ndash; tools &ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_companies_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_database_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_languages_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_audit_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_messagebox_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/tools/scorecard_appoptions_SqlMap.xml"/>-->
+
+  <!--&lt;!&ndash; userManager &ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_rights_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_ccgroups_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_roles_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_users_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_rightvalue_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_role_right_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_user_belongsto_ccgroup_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_user_canevaluate_ccgroup_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_user_right_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_user_role_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/user/scorecard_user_settings_SqlMap.xml"/>-->
+
+  <!--&lt;!&ndash; questionManager &ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_smediafiles_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_answers_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_questions_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_questiongroups_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_questforms_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/question/scorecard_user_questform_SqlMap.xml"/>-->
+
+  <!--&lt;!&ndash;evaluationsManager&ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_evalscommons_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_subevaluation_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_criteria_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_evaluations_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_externaldata_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_medialimits_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_evalanswers_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_callwrapups_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_categories_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_interactiontypes_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_evalcalls_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_templates_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/evaluation/scorecard_remainder_emails_SqlMap.xml"/>-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/speechreports/scorecard_speechreports_SqlMap.xml"/>-->
+
+
+  <!--&lt;!&ndash;charts&ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/charts/scorecard_charts_SqlMap.xml"/>-->
+
+  <!--&lt;!&ndash;dashboard&ndash;&gt;-->
+  <!--<sqlMap resource="cz/zoom/scorecard/business/data/xml/dashboard/scorecard_dashboard_SqlMap.xml"/>-->
+
+  <!--interactions-->
+  <sqlMap resource="mappings/scorecard_interactions_SqlMap.xml"/>
+
+</sqlMapConfig>
