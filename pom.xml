@@ -7,7 +7,14 @@
     <groupId>ibatis.to.know</groupId>
     <artifactId>ibatis</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
+    <properties>
+        <slf4j.version>1.7.7</slf4j.version>
+        <jersey2.version>2.12</jersey2.version>
+        <shiro.version>1.2.2</shiro.version>
+        <jboss.version>1.0.0.Final</jboss.version>
+    </properties>
 
     <dependencies>
     <dependency>
@@ -72,6 +79,74 @@
         </dependency>
 
 
+        <!--for rest-->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-spring3</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.xml.bind</groupId>
+            <artifactId>jboss-jaxb-api_2.2_spec</artifactId>
+            <version>${jboss.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -89,6 +164,41 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <!--<outputDirectory>d:\dev\jboss6\oxc-jboss-eap-6.0.1\standalone1\deployments\</outputDirectory>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <accessExternalSchema>file,http</accessExternalSchema>
+                            <generatePackage>cz.zoom.scorecard.business.app.transformation.jaxb</generatePackage>
+                            <schemaDirectory>src/main/resources</schemaDirectory>
+                            <schemaIncludes>
+                                <include>interaction.xsd</include>
+                                <include>questionnaire.xsd</include>
+                                <include>evaluation.xsd</include>
+                                <include>speechtag.xsd</include>
+                            </schemaIncludes>
+                            <bindingDirectory>src/main/resources</bindingDirectory>
+                            <bindingIncludes>
+                                <include>jaxb-bindings.xjb</include>
+                            </bindingIncludes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

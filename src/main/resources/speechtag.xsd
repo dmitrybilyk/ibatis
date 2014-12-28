@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="SpeechTags">
+        <xs:annotation>
+        <xs:documentation>Comment describing your root element</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="Tag">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="100"/>
+                                        <xs:whiteSpace value="collapse"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="State" default="UPDATING">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="READY"/>
+                                        <xs:enumeration value="UPDATING"/>
+                                        <xs:enumeration value="INDEXING"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Icon">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="100"/>
+                                        <xs:whiteSpace value="collapse"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Searchid">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:int">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="100"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Phrases">
+                                <xs:complexType>
+                                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                        <xs:element name="Phrase">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Name">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="100"/>
+                                                                <xs:whiteSpace value="collapse"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="Confidence" type="xs:double" minOccurs="0"/>
+                                                    <xs:element name="State" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="LastCountDate" type="xs:dateTime" minOccurs="0"/>
+                                                    <xs:element name="InteractionCount" type="xs:int" minOccurs="0"/>
+                                                    <xs:element name="Enabled" type="xs:boolean" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

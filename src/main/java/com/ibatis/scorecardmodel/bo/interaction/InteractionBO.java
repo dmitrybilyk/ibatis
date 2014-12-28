@@ -95,7 +95,7 @@ public class InteractionBO extends BaseBean {
   }
 
   public enum Type {
-    AUDIO, VIDEO;
+    AUDIO, VIDEO, EnumFileNameType;
   }
 
   public enum SavedSearch {

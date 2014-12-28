@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿Zdary -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Questionnaire">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="QuestionnaireID" type="xs:int" minOccurs="0"/>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+							<xs:whiteSpace value="collapse"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Version" default="1.0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+							<xs:whiteSpace value="collapse"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ScoringSystem" default="PERCENTAGE">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="PERCENTAGE"/>
+							<xs:enumeration value="POINTS"/>
+							<xs:enumeration value="GRADES"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Groups">
+					<xs:complexType>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element ref="Group"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ReportWeight" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Type" default="QUALITY" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="QUALITY"/>
+							<xs:enumeration value="SURVEY"/>
+							<xs:enumeration value="TRAINING"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Group">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+							<xs:whiteSpace value="collapse"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Weight">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				<xs:element name="Questions">
+					<xs:complexType>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element ref="Question"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Question">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="QuestionID" type="xs:int" minOccurs="0"/>
+				<xs:element name="QuestionText">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+							<xs:whiteSpace value="collapse"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="QuestionWeigh" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>@deprecated. use Weight instead. Either of those fields has to be filled in.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				<xs:element name="MediaFile" type="MediaFile" minOccurs="0"/>
+				<xs:element name="QuestionType" default="REGULAR_QUESTION" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="REGULAR_QUESTION"/>
+							<xs:enumeration value="CUSTOMER_FEEDBACK"/>
+							<xs:enumeration value="PROMPT_ONLY"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Answers">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="Answer"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Weight" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="0"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="MediaFile">
+		<xs:sequence>
+			<xs:element name="Path" type="xs:string" minOccurs="0"/>
+			<xs:element name="Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="ContentType" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Answer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AnswerText">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AnswerWeigh" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>@deprecated. use Score instead. Either of those fields has to be filled in.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="-100"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AnswerKey" type="xs:string" minOccurs="0"/>
+				<xs:element name="Compliance" default="NONE">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="SUCCESS_ALL"/>
+							<xs:enumeration value="SUCCESS_GROUP"/>
+							<xs:enumeration value="NONE"/>
+							<xs:enumeration value="NOT_APPLICABLE"/>
+							<xs:enumeration value="FAIL_ALL"/>
+							<xs:enumeration value="FAIL_GROUP"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" type="xs:string" minOccurs="0"/>
+				<xs:element name="Score" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:double">
+							<xs:minInclusive value="-100"/>
+							<xs:maxInclusive value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

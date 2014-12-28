@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="Interactions">
+        <xs:annotation>
+            <xs:documentation>Comment describing your root element</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="Interaction">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Agents">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded">
+                                        <xs:element name="Agent">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Name" type="xs:string" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Length" type="xs:int" minOccurs="0"/>
+                            <xs:element name="CoupleSid" type="xs:string" minOccurs="0"/>
+                            <xs:element name="Clients">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded">
+                                        <xs:element name="Client" type="xs:string" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="StartDate" type="xs:dateTime" minOccurs="0"/>
+                            <xs:element name="EvaluationId" type="xs:int" minOccurs="0"/>
+                            <xs:element name="Score" type="xs:double" minOccurs="0"/>
+                            <xs:element name="ScoringSystem" default="PERCENTAGE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="PERCENTAGE"/>
+                                        <xs:enumeration value="POINTS"/>
+                                        <xs:enumeration value="GRADES"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="MadiaFiles">
+                                <xs:complexType>
+                                    <xs:sequence maxOccurs="unbounded">
+                                        <xs:element name="MediaFile">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="MediaFileId" type="xs:int" minOccurs="0"/>
+                                                    <xs:element name="Path" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="Type" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="Checksum" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="Length" type="xs:int" minOccurs="0"/>
+                                                    <xs:element name="ChecksumType" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="Digest" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="EncryptionKeyId" type="xs:string" minOccurs="0"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

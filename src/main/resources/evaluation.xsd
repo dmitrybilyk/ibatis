@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					 elementFormDefault="qualified"
+					 attributeFormDefault="unqualified">
+
+	<xs:include schemaLocation="questionnaire.xsd"/>
+
+	<xs:element name="Evaluation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EvaluationDate" type="xs:dateTime" minOccurs="0"/>
+				<xs:element ref="Questionnaire"/>
+				<xs:element name="Evaluator" type="User" minOccurs="0"/>
+				<xs:element name="Evaluatee" type="User" minOccurs="0"/>
+				<xs:element ref="Criteria" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="User">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Phone" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Criteria">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SubEvaluation" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SubEvaluation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EvalCalls" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="EvalCall" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EvalAnswers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="EvalAnswer" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="EvalAnswer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Question"/>
+				<xs:element ref="Answer"/>
+				<xs:element name="Note" type="xs:string" minOccurs="0"/>
+				<xs:element name="MediaFile" type="MediaFile" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="EvalCall">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SID" type="xs:string" minOccurs="0"/>
+				<xs:element name="ExternalIDType" type="xs:string" minOccurs="0"/>
+				<xs:element name="ExternalID" type="xs:string" minOccurs="0"/>
+				<xs:element name="FromNumber" type="xs:string" minOccurs="0"/>
+				<xs:element name="ToNumber" type="xs:string" minOccurs="0"/>
+				<xs:element name="StartDate" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="StopDate" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="Length" type="xs:long" minOccurs="0"/>
+				<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
