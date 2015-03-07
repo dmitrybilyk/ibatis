@@ -6,6 +6,15 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Person extends BaseBean{
+  public enum Fields{
+    PER_FIRST_NAME("firstName");
+    private final String fieldName;
+    Fields(String property) {
+      this.fieldName = property;
+    }
+  }
+
+
  private int id;
  private String firstName;
  private String lastName;

@@ -1,15 +1,13 @@
 package com.ibatis.dao;
 
 import com.ibatis.ComplexParam;
-import com.ibatis.UserTEO;
-import com.ibatis.dao.PersonDao;
 import com.ibatis.search.RequestFailedException;
 import com.ibatis.search.SearchBO;
 import com.ibatis.search.SearchCondition;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.learn.model.Person;
+import com.learn.model.PersonIdHolder;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -61,7 +59,20 @@ public class PersonDaoIbatis implements PersonDao
     return null;
   }
 
-    @Override
+  @Override
+  public List<Person> getPersonsByIds(SqlMapClient sqlmapClient, List<PersonIdHolder> personIdHolderList) {
+    List<Person> persons = null;
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("personIdHolderList", personIdHolderList);
+      persons = (List<Person>) sqlmapClient.queryForList("getPersonsByIds", map);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return persons != null? persons : new ArrayList<Person>();
+  }
+
+  @Override
     public List<Person> getAllPersons(SqlMapClient sqlmapClient) {
         try {
             List<Person> persons = null;
@@ -76,6 +87,36 @@ public class PersonDaoIbatis implements PersonDao
         }
         return null;
     }
+
+  @Override
+  public List<Person> getPersonsByConditions(SqlMapClient sqlmapClient) {
+    try {
+      List<Person> persons = null;
+        Map<String, Object> map = new Hashtable<String, Object>();
+        SearchBO searchBO = new SearchBO();
+        searchBO.addCondition(new SearchCondition(Person.Fields.PER_FIRST_NAME, "Dima6"));
+        map.put("searchBO", searchBO);
+        persons = (List<Person>) sqlmapClient.queryForList("getPersonsByConditions", map);
+      return persons != null? persons : new ArrayList<Person>();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  @Override
+  public Integer getAllPersonsCount(SqlMapClient sqlmapClient) {
+    try {
+      Integer personsCount = null;
+        personsCount = (Integer) sqlmapClient.queryForObject("getAllPersonsCount");
+
+      return personsCount;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
     @Override
     public List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient) {

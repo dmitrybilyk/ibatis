@@ -34,4 +34,5 @@
     are relative to the classpath. For now, we only have one… -->
     <sqlMap resource="mappings/person.xml" />
     <sqlMap resource="mappings/address.xml" />
+    <sqlMap resource="mappings/common_SqlMap.xml" />
 </sqlMapConfig>

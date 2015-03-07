@@ -4,6 +4,13 @@
         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="Person">
 
+    <cacheModel id="personCacheSelect" type="MEMORY" readOnly="false" serialize="true" >
+        <flushInterval hours="24"/>
+        <flushOnExecute statement="insertPerson"/>
+        <property name="reference-type" value="SOFT" />
+    </cacheModel>
+
+
     <sql id="selectUsersPerson">
         SELECT *
     </sql>
@@ -12,13 +19,17 @@
         SELECT *
     </sql>
 
+    <sql id="selectPersons">
+        SELECT * FROM PERSON PERSONS
+    </sql>
+
     <resultMap class="com.learn.model.Person" groupBy="id" id="personsMap">
-        <result column="id" property="id"/>
-        <result column="firstName" property="firstName"/>
-        <result column="lastName" property="lastName"/>
-        <result column="birthDate" property="birthDate"/>
-        <result column="weightInKilograms" property="weightInKilograms"/>
-        <result column="heightInMeters" property="heightInMeters"/>
+        <result column="PER_ID" property="id"/>
+        <result column="PER_FIRST_NAME" property="firstName"/>
+        <result column="PER_LAST_NAME" property="lastName"/>
+        <result column="PER_BIRTH_DATE" property="birthDate"/>
+        <result column="PER_WEIGHT_KG" property="weightInKilograms"/>
+        <result column="PER_HEIGHT_M" property="heightInMeters"/>
     </resultMap>
 
     <resultMap class="com.learn.model.Person" groupBy="id" id="personsUsersMap">
@@ -29,12 +40,73 @@
 
     <select id="getAllPersons" resultClass="com.learn.model.Person" resultMap="personsMap">
         <include refid="selectPerson" />
-        WHERE
-        <iterate open=" in (" close=")" conjunction="," property="allowedAddressIds">
-            #allowedAddressIds[]#
-        </iterate>
         FROM PERSON
     </select>
+
+    <select id="getAllPersonsCount" cacheModel="personCacheSelect" resultClass="java.lang.Integer">
+        SELECT COUNT(*) FROM PERSON PERSONS
+    </select>
+
+    <select id="getPersonsByIds" resultMap="personsMap" parameterClass="java.util.Map">
+        <include refid="selectPerson" />
+        <isNotEmpty property="personIdHolderList">
+        WHERE PERSONS.PER_ID
+        <iterate open=" in (" close=")" conjunction="," property="personIdsHolderList">
+            #personIdsHolderList[].personId#
+        </iterate>
+        </isNotEmpty>
+        FROM PERSON PERSONS
+    </select>
+
+    <sql id="personsColumnsWhereFragment">
+        <isEqual property="searchBO.condition[].field" compareValue="PER_FIRST_NAME">PERSONS.PER_FIRST_NAME</isEqual>
+    </sql>
+
+    <sql id="personsOrderByFragment">
+        <iterate property="searchBO.order" conjunction=", " prepend="order by" removeFirstPrepend="true">
+            <isEqual property="searchBO.order[].field" compareValue="PER_FIRST_NAME">PERSONS.PER_FIRST_NAME</isEqual>
+            $searchBO.order[].direction.value$
+        </iterate>
+    </sql>
+
+    <sql id="personsWhereFragment">
+        <isParameterPresent>
+            <isNotEmpty property="searchBO">
+                <iterate property="searchBO.condition" conjunction=" " prepend=" " removeFirstPrepend="true">
+                    <isEqual property="searchBO.condition[].openBracket" compareValue="true">(</isEqual>
+                    <isNotNull property="searchBO.condition[].field">
+                        <isEqual property="searchBO.condition[].comparator.caseInSensitive" compareValue="true">lower(</isEqual>
+
+                        <include refid="personsColumnsWhereFragment"/>
+
+                        <isEqual property="searchBO.condition[].comparator.caseInSensitive" compareValue="true">)</isEqual>
+                        $searchBO.condition[].comparator.value$
+                        <isEqual property="searchBO.condition[].comparator.caseInSensitive" compareValue="true">lower(</isEqual>
+                        #searchBO.condition[].value#
+                        <isEqual property="searchBO.condition[].comparator.caseInSensitive" compareValue="true">)</isEqual>
+
+                    </isNotNull>
+
+                    <isEqual property="searchBO.condition[].closeBracket" compareValue="true">)</isEqual>
+                    <isNotNull property="searchBO.condition[].operator">$searchBO.condition[].operator.value$</isNotNull>
+                </iterate>
+            </isNotEmpty>
+        </isParameterPresent>
+    </sql>
+
+
+    <select id="getPersonsByConditions" resultMap="personsMap" parameterClass="java.util.Map">
+        <include refid="selectPersons" />
+        <isNotEmpty property="searchBO">
+            <isNotEmpty property="searchBO.condition"> where </isNotEmpty>
+            <include refid="personsWhereFragment"/>
+            <include refid="personsOrderByFragment"/>
+        </isNotEmpty>
+    </select>
+
+
+
+
 
     <select id="getAllPersonsFromUsers" resultClass="com.learn.model.Person" resultMap="personsUsersMap">
         <include refid="selectUsersPerson" />
@@ -44,7 +116,7 @@
 
     <select id="getPerson" resultClass="com.learn.model.Person">
         <include refid="selectPerson" />
-        FROM PERSON
+        FROM PERSON PERSONS
         WHERE PER_ID = #value#
     </select>
 

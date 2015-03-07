@@ -1,8 +1,8 @@
 package com.ibatis.dao;
 
-import com.ibatis.UserTEO;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.learn.model.Person;
+import com.learn.model.PersonIdHolder;
 
 import java.util.List;
 
@@ -16,7 +16,13 @@ public interface PersonDao {
 
   List<Person> getPersons(SqlMapClient sqlmapClient);
 
+  List<Person> getPersonsByIds(SqlMapClient sqlmapClient, List<PersonIdHolder> personIdHolderList);
+
   List<Person> getAllPersons(SqlMapClient sqlmapClient);
+
+  List<Person> getPersonsByConditions(SqlMapClient sqlmapClient);
+
+  Integer getAllPersonsCount(SqlMapClient sqlmapClient);
 
   List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient);
 

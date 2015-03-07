@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="common">
+
+
+
+  <sql id="startpagingFragment">
+    <isNotEmpty property="searchBO">
+     select *
+     from (select t.*, rownum rn
+          from (
+     </isNotEmpty>
+  </sql>
+
+  <sql id="endpagingFragment">
+    <isNotEmpty property="searchBO">
+    ) t
+         <isNotNull property="searchBO.limit">
+         where rownum &lt;=
+         <isNotNull property="searchBO.offset">#searchBO.offset#</isNotNull>
+         <isNull property="searchBO.offset">0</isNull>
+         +
+         <isNotNull property="searchBO.limit">#searchBO.limit#</isNotNull>
+         <isNull property="searchBO.limit">0</isNull>
+         </isNotNull>
+        )
+    where rn &gt;
+      <isNotNull property="searchBO.offset">#searchBO.offset#</isNotNull>
+      <isNull property="searchBO.offset">0</isNull>
+    </isNotEmpty>
+  </sql>
+  
+  <sql id="NextWhere">
+    <!-- check whether we already have "where" statement -->
+    <isNotEmpty property="searchBO">
+      <isEmpty property="searchBO.condition"> where </isEmpty>
+      <isNotEmpty property="searchBO.condition"> and </isNotEmpty>
+    </isNotEmpty>
+    <isEmpty property="searchBO"> where </isEmpty>
+  </sql>
+  
+</sqlMap>
