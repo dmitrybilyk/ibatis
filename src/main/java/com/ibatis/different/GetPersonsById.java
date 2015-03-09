@@ -17,9 +17,9 @@ import java.util.List;
  * Created by dmitry on 27.12.14.
  */
 public class GetPersonsById {
-    static PersonDao manager = new PersonDaoIbatis();
+    static PersonDao manager = new PersonDaoIbatis(SqlMapClientFactory.getClientInstance());
     public static void main(String[] args) {
-        SqlMapClient sqlMapClient = SqlMapClientFactory.getClientInstance();
+//        SqlMapClient sqlMapClient = SqlMapClientFactory.getClientInstance();
         List<PersonIdHolder> personIdHolderList = new ArrayList<PersonIdHolder>();
         PersonIdHolder personIdHolder = new PersonIdHolder();
         personIdHolder.setPersonId(17);
@@ -27,7 +27,7 @@ public class GetPersonsById {
         personIdHolder2.setPersonId(18);
         personIdHolderList.add(personIdHolder);
         personIdHolderList.add(personIdHolder2);
-        List<Person> persons = manager.<List<BaseBean>>getPersonsByIds(sqlMapClient, personIdHolderList);
+        List<Person> persons = manager.<List<BaseBean>>getPersonsByIds(personIdHolderList);
 
         View personsView = new ViewPersonImpl();
         personsView.viewEntity(persons);

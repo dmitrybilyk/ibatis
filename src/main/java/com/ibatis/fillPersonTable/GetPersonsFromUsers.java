@@ -16,10 +16,9 @@ import java.util.List;
  * Created by dmitry on 27.12.14.
  */
 public class GetPersonsFromUsers {
-    static PersonDao manager = new PersonDaoIbatis();
+    static PersonDao manager = new PersonDaoIbatis(SqlMapClientFactory.getClientInstance());
     public static void main(String[] args) {
-        SqlMapClient sqlMapClient = SqlMapVMClientFactory.getClientInstance();
-        List<Person> persons = manager.<List<BaseBean>>getAllPersonsFromUsers(sqlMapClient);
+        List<Person> persons = manager.<List<BaseBean>>getAllPersonsFromUsers();
 
         View personsView = new ViewPersonImpl();
         personsView.viewEntity(persons);

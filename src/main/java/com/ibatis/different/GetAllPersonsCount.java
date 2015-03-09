@@ -16,13 +16,12 @@ import java.util.List;
  * Created by dmitry on 27.12.14.
  */
 public class GetAllPersonsCount {
-    static PersonDao manager = new PersonDaoIbatis();
+    static PersonDao manager = new PersonDaoIbatis(SqlMapClientFactory.getClientInstance());
     public static void main(String[] args) {
-        SqlMapClient sqlMapClient = SqlMapClientFactory.getClientInstance();
-        Integer personsCount = manager.<Integer>getAllPersonsCount(sqlMapClient);
+        Integer personsCount = manager.<Integer>getAllPersonsCount();
         System.out.println(personsCount);
-        manager.addPerson(new Person.PersonBuilder(0, "Dima", "Bilyk", new Date()).build(), sqlMapClient);
-        Integer personsCount2 = manager.<Integer>getAllPersonsCount(sqlMapClient);
+        manager.addPerson(new Person.PersonBuilder(0, "Dima", "Bilyk", new Date()).build());
+        Integer personsCount2 = manager.<Integer>getAllPersonsCount();
         System.out.println(personsCount2);
 
     }

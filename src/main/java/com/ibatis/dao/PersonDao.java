@@ -10,21 +10,21 @@ import java.util.List;
  * Created by dik81 on 11/27/14.
  */
 public interface PersonDao {
-  Person addPerson(Person user, SqlMapClient sqlmapClient);
+  Person addPerson(Person user);
 
-  Person getUserById(Integer id, SqlMapClient sqlmapClient);
+  Person getUserById(Integer id);
 
-  List<Person> getPersons(SqlMapClient sqlmapClient);
+  List<Person> getPersons();
 
-  List<Person> getPersonsByIds(SqlMapClient sqlmapClient, List<PersonIdHolder> personIdHolderList);
+  List<Person> getPersonsByIds(List<PersonIdHolder> personIdHolderList);
 
-  List<Person> getAllPersons(SqlMapClient sqlmapClient);
+  List<Person> getAllPersons();
 
-  List<Person> getPersonsByConditions(SqlMapClient sqlmapClient);
+  List<Person> getPersonsByConditions();
 
-  Integer getAllPersonsCount(SqlMapClient sqlmapClient);
+  Integer getAllPersonsCount();
 
-  List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient);
+  List<Person> getAllPersonsFromUsers();
 
-  void deleteUserById(Integer id, SqlMapClient sqlmapClient);
+  void deleteUserById(Integer id);
 }

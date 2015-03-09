@@ -18,15 +18,14 @@ import java.util.Date;
 public class PersonIbatisTest {
   public static void main(String[] args) throws Exception
   {
-    //Initialize dao
-    PersonDao manager = new PersonDaoIbatis();
 
     //Create the SQLMapClient
     Reader reader = Resources.getResourceAsReader("sql-map-client.xml");
-    SqlMapClient sqlmapClient = SqlMapClientBuilder.buildSqlMapClient (reader);
+    //Initialize dao
+    PersonDao manager = new PersonDaoIbatis(SqlMapClientBuilder.buildSqlMapClient (reader));
 
     for (int i = 0; i < 10; i++) {
-      manager.addPerson(new Person.PersonBuilder(i, "Dima"+i, "Bilyk"+i, new Date()).build(),sqlmapClient);
+      manager.addPerson(new Person.PersonBuilder(i, "Dima"+i, "Bilyk"+i, new Date()).build());
     }
   }
 }

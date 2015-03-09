@@ -1,6 +1,7 @@
 package com.ibatis.fillPersonTable;
 
 import com.ibatis.common.resources.Resources;
+import com.ibatis.config.SqlMapClientFactory;
 import com.ibatis.dao.AddressDao;
 import com.ibatis.dao.AddressDaoImpl;
 import com.ibatis.dao.PersonDao;
@@ -19,15 +20,16 @@ import java.util.Date;
 public class FillTables {
     public static void main(String[] args) throws Exception
     {
-        //Initialize dao
-        PersonDao manager = new PersonDaoIbatis();
-
         //Create the SQLMapClient
         Reader reader = Resources.getResourceAsReader("sql-map-client.xml");
+        //Initialize dao
+        PersonDao manager = new PersonDaoIbatis(SqlMapClientFactory.getClientInstance());
+
+
         SqlMapClient sqlmapClient = SqlMapClientBuilder.buildSqlMapClient (reader);
 
         for (int i = 0; i < 10; i++) {
-            manager.addPerson(new Person.PersonBuilder(i, "Dima"+i, "Bilyk"+i+2, new Date()).build(),sqlmapClient);
+            manager.addPerson(new Person.PersonBuilder(i, "Dima"+i, "Bilyk"+i+2, new Date()).build());
         }
 
 

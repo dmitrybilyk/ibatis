@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="itdb.properties"/>
+    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+  </bean>
+
+  <bean id="callrecPostgresDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+    <property name="driverClassName" value="${itdb.postgres.dbdriver}"/>
+    <property name="url" value="${itdb.postgres.dburi}"/>
+    <property name="username" value="${itdb.postgres.callrec.user}"/>
+    <property name="password" value="${itdb.postgres.callrec.password}"/>
+  </bean>
+
+  <bean id="callrecPostgresSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+    <property name="configLocation" ref="sqlMapPath"/>
+    <property name="dataSource" ref="callrecPostgresDataSource"/>
+    <property name="sqlMapClientProperties">
+      <props>
+        <prop key="Pool.MaximumActiveConnections">20</prop>
+        <prop key="Pool.TimeToWait">5000</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="postgresAdminConnection" class="java.sql.DriverManager" factory-method="getConnection">
+    <constructor-arg index="0" value="${itdb.postgres.dburi}"/>
+    <constructor-arg index="1" value="root"/>
+    <constructor-arg index="2" value="root"/>
+  </bean>
+
+  <bean id="postgresDbOperations" class="com.ibatis.dao.PostgresDbOperations" init-method="initDatabaseConnection" destroy-method="closeConnection">
+    <constructor-arg name="connection" ref="postgresAdminConnection"/>
+    <constructor-arg name="schema" value="USERINFO"/>
+  </bean>
+</beans>

@@ -13,14 +13,20 @@ import java.util.*;
 
 public class PersonDaoIbatis implements PersonDao
 {
-    @Override
-    public Person addPerson(Person person, SqlMapClient sqlmapClient) {
+  private final SqlMapClient sqlMapClient;
+
+  public PersonDaoIbatis(SqlMapClient sqlMapClient) {
+    this.sqlMapClient = sqlMapClient;
+  }
+
+  @Override
+    public Person addPerson(Person person) {
         try
         {
-            Integer id = (Integer)sqlmapClient.queryForObject("getMaxId");
+            Integer id = (Integer)sqlMapClient.queryForObject("getMaxId");
             id = id == null ? 1 : id + 1;
             person.setId(id);
-            sqlmapClient.insert("insertPerson", person);
+            sqlMapClient.insert("insertPerson", person);
             return person;
         }
         catch(Exception e)
@@ -31,10 +37,10 @@ public class PersonDaoIbatis implements PersonDao
     }
  
     @Override
-    public Person getUserById(Integer id, SqlMapClient sqlmapClient) {
+    public Person getUserById(Integer id) {
         try
         {
-            Person user = (Person)sqlmapClient.queryForObject("getPerson", id);
+            Person user = (Person)sqlMapClient.queryForObject("getPerson", id);
             return user;
         }
         catch(Exception e)
@@ -45,13 +51,13 @@ public class PersonDaoIbatis implements PersonDao
     }
 
   @Override
-  public List<Person> getPersons(SqlMapClient sqlmapClient) {
+  public List<Person> getPersons() {
     try {
       Map<String, Object> map = new HashMap<String, Object>();
       ComplexParam complexParam = new ComplexParam();
       complexParam.setComplexValue("alias");
       map.put("key", "alias");
-      List<Person> persons = (List<Person>) sqlmapClient.queryForList("person.getPersons", map);
+      List<Person> persons = (List<Person>) sqlMapClient.queryForList("person.getPersons", map);
       return persons != null? persons : new ArrayList<Person>();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -60,12 +66,12 @@ public class PersonDaoIbatis implements PersonDao
   }
 
   @Override
-  public List<Person> getPersonsByIds(SqlMapClient sqlmapClient, List<PersonIdHolder> personIdHolderList) {
+  public List<Person> getPersonsByIds(List<PersonIdHolder> personIdHolderList) {
     List<Person> persons = null;
     try {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("personIdHolderList", personIdHolderList);
-      persons = (List<Person>) sqlmapClient.queryForList("getPersonsByIds", map);
+      persons = (List<Person>) sqlMapClient.queryForList("getPersonsByIds", map);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -73,11 +79,11 @@ public class PersonDaoIbatis implements PersonDao
   }
 
   @Override
-    public List<Person> getAllPersons(SqlMapClient sqlmapClient) {
+    public List<Person> getAllPersons() {
         try {
             List<Person> persons = null;
             try {
-                persons = (List<Person>) sqlmapClient.queryForList("getAllPersons", createParams());
+                persons = (List<Person>) sqlMapClient.queryForList("getAllPersons", createParams());
             } catch (RequestFailedException e) {
                 e.printStackTrace();
             }
@@ -89,14 +95,14 @@ public class PersonDaoIbatis implements PersonDao
     }
 
   @Override
-  public List<Person> getPersonsByConditions(SqlMapClient sqlmapClient) {
+  public List<Person> getPersonsByConditions() {
     try {
       List<Person> persons = null;
         Map<String, Object> map = new Hashtable<String, Object>();
         SearchBO searchBO = new SearchBO();
         searchBO.addCondition(new SearchCondition(Person.Fields.PER_FIRST_NAME, "Dima6"));
         map.put("searchBO", searchBO);
-        persons = (List<Person>) sqlmapClient.queryForList("getPersonsByConditions", map);
+        persons = (List<Person>) sqlMapClient.queryForList("getPersonsByConditions", map);
       return persons != null? persons : new ArrayList<Person>();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -106,10 +112,10 @@ public class PersonDaoIbatis implements PersonDao
 
 
   @Override
-  public Integer getAllPersonsCount(SqlMapClient sqlmapClient) {
+  public Integer getAllPersonsCount() {
     try {
       Integer personsCount = null;
-        personsCount = (Integer) sqlmapClient.queryForObject("getAllPersonsCount");
+        personsCount = (Integer) sqlMapClient.queryForObject("getAllPersonsCount");
 
       return personsCount;
     } catch (SQLException e) {
@@ -119,11 +125,11 @@ public class PersonDaoIbatis implements PersonDao
   }
 
     @Override
-    public List<Person> getAllPersonsFromUsers(SqlMapClient sqlmapClient) {
+    public List<Person> getAllPersonsFromUsers() {
         try {
             List<Person> persons = null;
             try {
-                persons = (List<Person>) sqlmapClient.queryForList("getAllPersonsFromUsers", createParams());
+                persons = (List<Person>) sqlMapClient.queryForList("getAllPersonsFromUsers", createParams());
             } catch (RequestFailedException e) {
                 e.printStackTrace();
             }
@@ -144,10 +150,10 @@ public class PersonDaoIbatis implements PersonDao
 
 
   @Override
-    public void deleteUserById(Integer id, SqlMapClient sqlmapClient) {
+    public void deleteUserById(Integer id) {
         try
         {
-            sqlmapClient.delete("user.deleteUserById", id);
+            sqlMapClient.delete("user.deleteUserById", id);
         }
         catch(Exception e)
         {

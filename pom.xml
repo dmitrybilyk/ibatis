@@ -14,14 +14,48 @@
         <jersey2.version>2.12</jersey2.version>
         <shiro.version>1.2.2</shiro.version>
         <jboss.version>1.0.0.Final</jboss.version>
+        <spring.version>3.2.7.RELEASE</spring.version>
+        <postgres.host>localhost</postgres.host>
+        <postgres.database>USERINFO</postgres.database>
+        <postgres.port>3306</postgres.port>
     </properties>
 
     <dependencies>
-    <dependency>
-        <groupId>org.apache.ibatis</groupId>
-        <artifactId>ibatis-sqlmap</artifactId>
-        <version>2.3.4.726</version>
-    </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.4.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-sqlmap</artifactId>
+            <version>2.3.4.726</version>
+        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
@@ -151,7 +185,6 @@
     </dependencies>
 
 
-
     <build>
 
         <plugins>
@@ -204,5 +237,78 @@
         </plugins>
         <finalName>web</finalName>
     </build>
+
+    <profiles>
+    <!-- PROFILE: PostgreSQL Integration Test - Requires Live Database configuration -->
+    <profile>
+        <id>integration-postgres</id>
+        <build>
+            <defaultGoal>integration-test</defaultGoal>
+            <plugins>
+                <!--<plugin>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                    <!--<executions>-->
+                        <!--<execution>-->
+                            <!--<id>callrec-dbpostgres</id>-->
+                            <!--<phase>process-sources</phase>-->
+                            <!--<goals>-->
+                                <!--<goal>unpack</goal>-->
+                            <!--</goals>-->
+                            <!--<configuration>-->
+                                <!--<artifactItems>-->
+                                    <!--<artifactItem>-->
+                                        <!--<groupId>zoom.callrec</groupId>-->
+                                        <!--<artifactId>callrec-dbpostgres</artifactId>-->
+                                        <!--<type>jar</type>-->
+                                        <!--<overWrite>true</overWrite>-->
+                                        <!--<includes>**/*</includes>-->
+                                        <!--<outputDirectory>${project.build.directory}/dependency/dbpostgres</outputDirectory>-->
+                                    <!--</artifactItem>-->
+                                <!--</artifactItems>-->
+                            <!--</configuration>-->
+                        <!--</execution>-->
+                    <!--</executions>-->
+                <!--</plugin>-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>integration</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <systemPropertyVariables combine.children="append">
+                                    <itdb.postgres.host>${postgres.host}</itdb.postgres.host>
+                                    <itdb.postgres.port>${postgres.port}</itdb.postgres.port>
+                                    <itdb.postgres.database>${postgres.database}</itdb.postgres.database>
+                                    <!--<itdb.postgres.dburi>jdbc:mysql://localhost:3306/USERINFO</itdb.postgres.dburi>-->
+                                    <itdb.postgres.dburi>jdbc:mysql://${postgres.host}:${postgres.port}/${postgres.database}</itdb.postgres.dburi>
+                                    <itdb.postgres.callrec.user>root</itdb.postgres.callrec.user>
+                                    <itdb.postgres.callrec.password>root</itdb.postgres.callrec.password>
+                                    <itdb.postgres.dbdriver>com.mysql.jdbc.Driver</itdb.postgres.dbdriver>
+                                    <itdb.postgres.sqlmapclass>com.ibatis.config.SqlMapClientFactory</itdb.postgres.sqlmapclass>
+                                </systemPropertyVariables>
+                                <includes combine.children="append">
+                                    <include>**/*PostgresITDB.java</include>
+                                    <include>**/*PostgresITDBSuite.java</include>
+                                </includes>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
 
 </project>
