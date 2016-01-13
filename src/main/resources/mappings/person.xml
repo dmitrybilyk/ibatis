@@ -33,9 +33,9 @@
     </resultMap>
 
     <resultMap class="com.learn.model.Person" groupBy="id" id="personsUsersMap">
-        <result column="userid" property="id"/>
-        <result column="name" property="firstName"/>
-        <result column="surName" property="lastName"/>
+        <result column="per_id" property="id"/>
+        <result column="per_first_name" property="firstName"/>
+        <result column="per_last_name" property="lastName"/>
     </resultMap>
 
     <select id="getAllPersons" resultClass="com.learn.model.Person" resultMap="personsMap">
@@ -110,7 +110,7 @@
 
     <select id="getAllPersonsFromUsers" resultClass="com.learn.model.Person" resultMap="personsUsersMap">
         <include refid="selectUsersPerson" />
-        FROM wbsc.sc_users
+        FROM person
     </select>
 
 
